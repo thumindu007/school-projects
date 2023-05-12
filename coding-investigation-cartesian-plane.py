@@ -13,13 +13,6 @@ def calculate_gradient(playercoords,destination):
 def calculate_distance(point1, point2):
     return round(math.sqrt(((point1.posx - point2.posx) ** 2) + ((point1.posy - point2.posy) ** 2)), 1)
 
-def print_info(player, otherplayer, destination):
-    print("\n     **PLAYER",player.playertype,"INFO**     ")
-    print('Location:',player.posx,"x",player.posy,'y')
-    print("Distance to Destination:",calculate_distance(player, destination),'units')
-    print('Gradient with destination:',calculate_gradient(player, destination))
-    print('Midpoint with Player',otherplayer.playertype,':',calculate_midpoint(player1, player2),'\n')
-
 def print_destination_info(destination):
     print("\n     **DESTINATION LOCATION**     ",
           '\nLocation:',destination.posx,"x",destination.posy,"y\n\n")
@@ -43,49 +36,36 @@ def move_player(triples):
         triple_to_move = triples[i]
     short,long = triple_to_move[0], triple_to_move[1]
     return translation_calculator(short, long, direction)
-    print("end")
 
 #assigns random cords to each player and destination
-class player1class:
+class player:
     def __init__(self, posx, posy, playertype):
         self.posx = posx
         self.posy = posy
         self.playertype = playertype
 
-class player2class:
-    def __init__(self, posx, posy, playertype):
-        self.posx = posx
-        self.posy = posy
-        self.playertype = playertype
+    def print_info(self, destination):
+        print("\n     **PLAYER",self.playertype,"INFO**     ")
+        print('Location:',self.posx,"x",self.posy,'y')
+        print("Distance to Destination:",calculate_distance(self, destination),'units')
+        print('Gradient with destination:',calculate_gradient(self, destination))
+        print('Midpoint with other Player:',calculate_midpoint(player1, player2),'\n')
 
-class destinationclass:
-    def __init__(self, posx, posy, playertype):
-        self.posx = posx
-        self.posy = posy
-        self.playertype = playertype
-
-player1 = player1class(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)
-player2 = player2class(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
-destination = destinationclass(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 3)
-
-#player2 = {'posx' : random.randrange(-800, 800, 1), 
-#            'posy' : random.randrange(-800, 800, 1), 
-#            'playertype' : 2}
-#destination = {'posx' : random.randrange(-800, 800, 1), 
- #              'posy' : random.randrange(-800, 800, 1),
-#                'playertype' : 3}
+player1 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)
+player2 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
+destination = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 3)
 
 #prints all the player info
-#print_info(player1, player2, destination)
-#print_info(player2, player1, destination)
-#print_destination_info(destination)
-print(player1)
-#while True:
-#    print("Player 1, enter your direction and the amount you want to move in it")
-#    new_coords = move_player(triples)
-#    player1.update({'posx' : player1['posx'] + new_coords[0], 'posy' : player1['posy'] + new_coords[1]})
-#    print_info(player1, player2, destination)
-#    print("Player 2, enter your direction and the amount you want to move in it")
-#    new_coords = move_player(triples)
-#    player2.update({'posx' : player2['posx'] + new_coords[0], 'posy' : player2['posy'] + new_coords[1]})
-#    print_info(player2, player1, destination)
+player1.print_info(destination)
+player2.print_info(destination)
+print_destination_info(destination)
+
+while True:
+    print("Player 1, enter your direction and the amount you want to move in it")
+    new_coords = move_player(triples)
+    player1.posx, player1.posy = player1.posx + new_coords[0], player1.posy + new_coords[1]
+    player1.print_info(destination)
+    print("Player 2, enter your direction and the amount you want to move in it")
+    new_coords = move_player(triples)
+    player2.posx, player2.posy = player2.posx + new_coords[0], player2.posy + new_coords[1]
+    player2.print_info(destination)

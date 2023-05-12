@@ -17,15 +17,15 @@ def print_destination_info(destination):
     print("\n     **DESTINATION LOCATION**     ",
           '\nLocation:',destination.posx,"x",destination.posy,"y\n\n")
 
-def translation_calculator(short, long, direction):
-    if direction == 1: return long, short
-    elif direction == 2: return short, long
-    elif direction == 3: return -short, long
-    elif direction == 4: return -long, short
-    elif direction == 5: return -long, -short
-    elif direction == 6: return -short, -long
-    elif direction == 7: return short, -long
-    elif direction == 8: return long, -short
+def translation_calculator(short_side, long_side, direction):
+    index = direction - 1
+    direction_multiplier = directions[index]
+    short_side = short_side * direction_multiplier[1]
+    long_side = long_side * direction_multiplier[2]
+    if direction_multiplier[3] == True:
+        short_side, long_side = long_side, short_side
+    print(short_side, long_side)
+    return short_side, long_side
 
 def move_player(triples):
     units_to_move = int(input("How much units do you want to move: "))
@@ -37,7 +37,7 @@ def move_player(triples):
     short,long = triple_to_move[0], triple_to_move[1]
     return translation_calculator(short, long, direction)
 
-#assigns random cords to each player and destination
+#creates a class for the template of the players
 class player:
     def __init__(self, posx, posy, playertype):
         self.posx = posx
@@ -51,6 +51,16 @@ class player:
         print('Gradient with destination:',calculate_gradient(self, destination))
         print('Midpoint with other Player:',calculate_midpoint(self, otherplayer),'\n')
 
+directions = [[1, 1, 1, True],
+              [2, 1, 1, False],
+              [3, -1, 1, False],
+              [4, 1, -1, True],
+              [5, -1, -1, True],
+              [6, -1, -1, False],
+              [7, 1, -1, False],
+              [8, 1, -1, True]]
+
+#uses the class as a template to create players with random coordinates
 player1 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)
 player2 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
 destination = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 3)
@@ -64,8 +74,8 @@ while True:
     print("Player 1, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player1.posx, player1.posy = player1.posx + new_coords[0], player1.posy + new_coords[1]
-    player1.print_info(destination)
+    player1.print_info(destination, player2)
     print("Player 2, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player2.posx, player2.posy = player2.posx + new_coords[0], player2.posy + new_coords[1]
-    player2.print_info(destination)
+    player2.print_info(destination, player2)

@@ -4,25 +4,25 @@ from triples import *
 
 # calculates the midpoint between two points given to the function
 def calculate_midpoint(player1,player2):
-    midpointx,midpointy = (player1['posx']+player2['posx'])/2, (player1['posy']+player2['posy'])/2
+    midpointx,midpointy = (player1.posx + player2.posx) / 2, (player1.posy + player2.posy)/2
     return midpointx, midpointy
 
 def calculate_gradient(playercoords,destination):
-    return round((destination['posy']-playercoords['posy']) / (destination['posx']-playercoords['posx']), 1)
+    return round((destination.posy - playercoords.posy) / (destination.posx - playercoords.posx), 1)
 
 def calculate_distance(point1, point2):
-    return round(math.sqrt(((point1['posx'] - point2['posx']) ** 2) + ((point1['posy'] - point2['posy']) ** 2)), 1)
+    return round(math.sqrt(((point1.posx - point2.posx) ** 2) + ((point1.posy - point2.posy) ** 2)), 1)
 
 def print_info(player, otherplayer, destination):
-    print("\n     **PLAYER",player['playertype'],"INFO**     ")
-    print('Location:',player['posx'],"x",player['posy'],'y')
+    print("\n     **PLAYER",player.playertype,"INFO**     ")
+    print('Location:',player.posx,"x",player.posy,'y')
     print("Distance to Destination:",calculate_distance(player, destination),'units')
     print('Gradient with destination:',calculate_gradient(player, destination))
-    print('Midpoint with Player',otherplayer['playertype'],':',calculate_midpoint(player1, player2),'\n')
+    print('Midpoint with Player',otherplayer.playertype,':',calculate_midpoint(player1, player2),'\n')
 
 def print_destination_info(destination):
     print("\n     **DESTINATION LOCATION**     ",
-          '\nLocation:',destination['posx'],"x",destination['posy'],"y\n\n")
+          '\nLocation:',destination.posx,"x",destination.posy,"y\n\n")
 
 def translation_calculator(short, long, direction):
     if direction == 1: return long, short
@@ -48,19 +48,32 @@ def move_player(triples):
 #assigns random cords to each player and destination
 class player1class:
     def __init__(self, posx, posy, playertype):
-        player1.posx = posx
-        player1.posy = posy
-        player1.playertype = playertype
+        self.posx = posx
+        self.posy = posy
+        self.playertype = playertype
 
+class player2class:
+    def __init__(self, posx, posy, playertype):
+        self.posx = posx
+        self.posy = posy
+        self.playertype = playertype
 
-player1 = player1class(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1))
+class destinationclass:
+    def __init__(self, posx, posy, playertype):
+        self.posx = posx
+        self.posy = posy
+        self.playertype = playertype
 
-player2 = {'posx' : random.randrange(-800, 800, 1), 
-            'posy' : random.randrange(-800, 800, 1), 
-            'playertype' : 2}
-destination = {'posx' : random.randrange(-800, 800, 1), 
-               'posy' : random.randrange(-800, 800, 1),
-                'playertype' : 3}
+player1 = player1class(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)
+player2 = player2class(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
+destination = destinationclass(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 3)
+
+#player2 = {'posx' : random.randrange(-800, 800, 1), 
+#            'posy' : random.randrange(-800, 800, 1), 
+#            'playertype' : 2}
+#destination = {'posx' : random.randrange(-800, 800, 1), 
+ #              'posy' : random.randrange(-800, 800, 1),
+#                'playertype' : 3}
 
 #prints all the player info
 #print_info(player1, player2, destination)

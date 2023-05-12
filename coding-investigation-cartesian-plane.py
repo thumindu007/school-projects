@@ -44,11 +44,17 @@ def move_player(triples):
     short,long = triple_to_move[0], triple_to_move[1]
     return translation_calculator(short, long, direction)
     print("end")
-    
+
 #assigns random cords to each player and destination
-player1 = {'posx' : random.randrange(-800, 800, 1), 
-            'posy' : random.randrange(-800, 800, 1), 
-            'playertype' : 1}
+class player1class:
+    def __init__(self, posx, posy, playertype):
+        player1.posx = posx
+        player1.posy = posy
+        player1.playertype = playertype
+
+
+player1 = player1class(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1))
+
 player2 = {'posx' : random.randrange(-800, 800, 1), 
             'posy' : random.randrange(-800, 800, 1), 
             'playertype' : 2}
@@ -57,16 +63,16 @@ destination = {'posx' : random.randrange(-800, 800, 1),
                 'playertype' : 3}
 
 #prints all the player info
-print_info(player1, player2, destination)
-print_info(player2, player1, destination)
-print_destination_info(destination)
-
-while True:
-    print("Player 1, enter your direction and the amount you want to move in it")
-    new_coords = move_player(triples)
-    player1.update({'posx' : player1['posx'] + new_coords[0], 'posy' : player1['posy'] + new_coords[1]})
-    print_info(player1, player2, destination)
-    print("Player 2, enter your direction and the amount you want to move in it")
-    new_coords = move_player(triples)
-    player2.update({'posx' : player2['posx'] + new_coords[0], 'posy' : player2['posy'] + new_coords[1]})
-    print_info(player2, player1, destination)
+#print_info(player1, player2, destination)
+#print_info(player2, player1, destination)
+#print_destination_info(destination)
+print(player1)
+#while True:
+#    print("Player 1, enter your direction and the amount you want to move in it")
+#    new_coords = move_player(triples)
+#    player1.update({'posx' : player1['posx'] + new_coords[0], 'posy' : player1['posy'] + new_coords[1]})
+#    print_info(player1, player2, destination)
+#    print("Player 2, enter your direction and the amount you want to move in it")
+#    new_coords = move_player(triples)
+#    player2.update({'posx' : player2['posx'] + new_coords[0], 'posy' : player2['posy'] + new_coords[1]})
+#    print_info(player2, player1, destination)

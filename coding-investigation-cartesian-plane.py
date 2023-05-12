@@ -44,20 +44,20 @@ class player:
         self.posy = posy
         self.playertype = playertype
 
-    def print_info(self, destination):
+    def print_info(self, destination, otherplayer):
         print("\n     **PLAYER",self.playertype,"INFO**     ")
         print('Location:',self.posx,"x",self.posy,'y')
         print("Distance to Destination:",calculate_distance(self, destination),'units')
         print('Gradient with destination:',calculate_gradient(self, destination))
-        print('Midpoint with other Player:',calculate_midpoint(player1, player2),'\n')
+        print('Midpoint with other Player:',calculate_midpoint(self, otherplayer),'\n')
 
 player1 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)
 player2 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
 destination = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 3)
 
 #prints all the player info
-player1.print_info(destination)
-player2.print_info(destination)
+player1.print_info(destination, player2)
+player2.print_info(destination, player1)
 print_destination_info(destination)
 
 while True:

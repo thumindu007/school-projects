@@ -51,6 +51,14 @@ class player:
         print('Gradient with destination:',calculate_gradient(self, destination))
         print('Midpoint with other Player:',calculate_midpoint(self, otherplayer),'\n')
 
+    def checkspacebuffer(self, otherplayer, destination):
+        dis_otherplayer = calculate_distance(self, otherplayer)
+        dis_destination = calculate_distance(self, destination)
+        if dis_destination < 10 or dis_destination < 10:
+            return True
+        else:
+            return False
+
 directions = [[1, 1, 1, True],
               [2, 1, 1, False],
               [3, -1, 1, False],
@@ -65,17 +73,30 @@ player1 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1),
 player2 = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
 destination = player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 3)
 
+player1win = False
+player2win = False
+
 #prints all the player info
 player1.print_info(destination, player2)
 player2.print_info(destination, player1)
 print_destination_info(destination)
 
-while True:
+
+
+while player1win == False and player2win == False:
+
     print("Player 1, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player1.posx, player1.posy = player1.posx + new_coords[0], player1.posy + new_coords[1]
     player1.print_info(destination, player2)
+    if player1.checkspacebuffer(player2, destination):
+        player1win = True
+
     print("Player 2, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player2.posx, player2.posy = player2.posx + new_coords[0], player2.posy + new_coords[1]
     player2.print_info(destination, player2)
+    if player2.checkspacebuffer(player1, destination):
+        player1win = True
+
+print("win")

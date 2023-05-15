@@ -50,7 +50,7 @@ def translation_calculator(short_side, long_side, direction):
     return short_side, long_side
 
 def move_player(possible_moves):
-    units_to_move_direction = input("How much units do you want to move: ")
+    units_to_move_direction = input("What is your move?: ")
     units_to_move_direction = units_to_move_direction.split()
     units_to_move, direction = int(units_to_move_direction[0]), int(units_to_move_direction[1])
  
@@ -99,13 +99,14 @@ while player1win == False and player2win == False:
         winner = 'Player 1'
         player1win = True
     print_destination_info(target_destination)
+
     print("Player 2, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player2.posx, player2.posy = player2.posx + new_coords[0], player2.posy + new_coords[1]
     player2.print_info(target_destination, player2)
-    print_destination_info(target_destination)
     if player2.check_win(player1, target_destination):
         winner = 'Player 2'
         player1win = True
+    print_destination_info(target_destination)
 
 print(winner,"has won the game!")

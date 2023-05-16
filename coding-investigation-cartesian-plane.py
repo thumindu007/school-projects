@@ -1,6 +1,9 @@
 import random
+import time
+from pytimedinput import timedInput
 import math
 from triples import * #imports the triples list
+
 
 #creates a class for the template of the players
 class Player:
@@ -24,7 +27,6 @@ class Player:
             return True
         else:
             return False
-
 
 # calculates the midpoint between two points given to the function
 def calculate_midpoint(player1,player2):
@@ -56,8 +58,13 @@ def translation_calculator(short_side, long_side, direction): #short side is the
     return short_side, long_side
 
 def move_player(possible_moves):
-    units_to_move_direction = input("What is your move?: ")
-    units_to_move_direction = units_to_move_direction.split()
+    units_to_move_direction, timedout = timedInput("What is your move?: ", timeout=10)
+    if timedout:
+        print("Timed out when waiting for input.")
+        units_to_move_direction = [random.randrange(5, 800, 1), random.randrange(1, 8, 1)]
+        time.sleep(3)
+    else:
+        units_to_move_direction = units_to_move_direction.split()
     units_to_move, direction = int(units_to_move_direction[0]), int(units_to_move_direction[1])
     for move in possible_moves:
         if move[2] > units_to_move:

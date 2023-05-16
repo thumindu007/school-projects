@@ -1,31 +1,31 @@
 import random
 import time
-from pytimedinput import timedInput
+from pytimedinput import timedInput #speacial version of an input
 import math
 from triples import * #imports the triples list
 
 #creates a class for the template of the players
 class Player:
     def __init__(self, posx, posy, playertype):
-        self.posx = posx
-        self.posy = posy
-        self.playertype = playertype
-        self.spacebuffer = 10
+        self.posx = posx #assigns the x possition
+        self.posy = posy #assigns the y possition
+        self.playertype = playertype #assigns a player type from 1, 2 and 3 as the destination
+        self.spacebuffer = 10 #assigns the distance of the space buffer for this player
 
-    def print_info(self, destination, otherplayer):
+    def print_info(self, destination, otherplayer): #prints all the player infomation
         print("\n     **PLAYER",self.playertype,"INFO**     ")
         print('Location:',self.posx,"x",self.posy,'y')
-        print("Distance to Destination:",calculate_distance(self, destination),'units')
+        print("Distance to destination:",calculate_distance(self, destination),'units')
         print('Gradient with destination:',calculate_gradient(self, destination))
-        print('Midpoint with other Player:',calculate_midpoint(self, otherplayer),'\n')
+        print('Midpoint with other player:',calculate_midpoint(self, otherplayer),'\n')
 
-    def check_win(self, otherplayer, destination):
+    def check_win(self, otherplayer, destination): #checks weather a player is within a spacebuffer of another
         dis_otherplayer = calculate_distance(self, otherplayer)
         dis_destination = calculate_distance(self, destination)
         if dis_otherplayer < self.spacebuffer or dis_destination < self.spacebuffer:
-            return True
+            return True #returns True if they are in one
         else:
-            return False
+            return False #returns False if they aren't in one
 
 # calculates the midpoint between two points given to the function
 def calculate_midpoint(player1,player2):
@@ -47,8 +47,7 @@ def print_destination_info(destination):
 
 #calculates the 2 numbers that will be added to the coordinates of a player to make them move in a certain direction
 def translation_calculator(short_side, long_side, direction): #short side is the first number of the triple and long side is the second
-    index = direction - 1
-    direction_multiplier = directions[index]
+    direction_multiplier = directions[direction - 1]
     short_side = short_side * direction_multiplier[1]
     long_side = long_side * direction_multiplier[2]
     if direction_multiplier[3] is True:
@@ -56,9 +55,9 @@ def translation_calculator(short_side, long_side, direction): #short side is the
     print(short_side, long_side)
     return short_side, long_side
 
-def move_player(possible_moves):
-    units_to_move_direction, timedout = timedInput("What is your move?: ", timeout=10)
-    if timedout:
+def move_player(possible_moves): #creates a new set of coordinates that will be added to the origonal ones
+    units_to_move_direction, timedout = timedInput("What is your move?: ", timeout=10) #gets the input for units to move and directions from a timedInput
+    if timedout:                                                                       #this will 
         print("Timed out when waiting for input.")
         units_to_move_direction = [random.randrange(5, 800, 1), random.randrange(1, 8, 1)]
         time.sleep(3)
@@ -80,7 +79,7 @@ directions = [[1, 1, 1, True],
               [5, -1, -1, True],
               [6, -1, -1, False],
               [7, 1, -1, False],
-              [8, 1, -1, True]]
+              [8, -1, 1, True]]
 
 #uses the class as a template to create players with random coordinates
 player1 = Player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)

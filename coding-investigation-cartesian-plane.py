@@ -4,7 +4,6 @@ from pytimedinput import timedInput
 import math
 from triples import * #imports the triples list
 
-
 #creates a class for the template of the players
 class Player:
     def __init__(self, posx, posy, playertype):
@@ -98,7 +97,6 @@ player2.print_info(target_destination, player1)
 print_destination_info(target_destination)
 
 while PLAYER1WIN is False and PLAYER2WIN is False:
-
     print("Player 1, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player1.posx, player1.posy = player1.posx + new_coords[0], player1.posy + new_coords[1]

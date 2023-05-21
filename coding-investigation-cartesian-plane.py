@@ -26,6 +26,16 @@ class Player:
             return True #returns True if they are in one
         else:
             return False #returns False if they aren't in one
+        
+class Location:
+    def __init__(self, posx, posy):
+        self.posx = posx #assigns the x possition
+        self.posy = posy #assigns the y possition
+        self.spacebuffer = 10
+
+    def print_destination_info(destination):
+        print("\n     **DESTINATION LOCATION**     ",
+            '\nLocation:',destination.posx,"x",destination.posy,"y\n\n")
 
 # calculates the midpoint between two points given to the function
 def calculate_midpoint(player1,player2):
@@ -41,9 +51,7 @@ def calculate_distance(point1, point2):
     return round(math.sqrt(((point1.posx - point2.posx) ** 2) + ((point1.posy - point2.posy) ** 2)), 1)
 
 #prints the infomation about the destination
-def print_destination_info(destination):
-    print("\n     **DESTINATION LOCATION**     ",
-          '\nLocation:',destination.posx,"x",destination.posy,"y\n\n")
+
 
 #calculates the 2 numbers that will be added to the coordinates of a player to make them move in a certain direction
 def translation_calculator(short_side, long_side, direction): #short side is the first number of the triple and long side is the second
@@ -84,7 +92,7 @@ directions = [[1, 1, 1, True],
 #uses the class as a template to create players with random coordinates
 player1 = Player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)
 player2 = Player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
-target_destination = Player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 3)
+target_destination = Location(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1))
 
 #declaires that no one has won the game yet
 PLAYER1WIN = False
@@ -93,7 +101,7 @@ PLAYER2WIN = False
 #prints all the player info
 player1.print_info(target_destination, player2)
 player2.print_info(target_destination, player1)
-print_destination_info(target_destination)
+target_destination.print_destination_info(target_destination)
 
 while PLAYER1WIN is False and PLAYER2WIN is False:
     print("Player 1, enter your direction and the amount you want to move in it")
@@ -103,7 +111,7 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
     if player1.check_win(player2, target_destination):
         WINNER = 'Player 1'
         PLAYER1WIN = True
-    print_destination_info(target_destination)
+    target_destination.print_destination_info(target_destination)
     
     print("Player 2, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
@@ -112,6 +120,6 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
     if player2.check_win(player1, target_destination):
         WINNER = 'Player 2'
         PLAYER1WIN = True
-    print_destination_info(target_destination)
+    target_destination.print_destination_info(target_destination)
 
 print(WINNER,"has won the game!")

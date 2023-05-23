@@ -2,7 +2,12 @@ import random
 import time
 from pytimedinput import timedInput #speacial version of an input
 import math
+import pygame
+import sys
 from triples import * #imports the triples list
+
+pygame.init()
+screen = pygame.display.set_mode((1600, 1600))
 
 #creates a class for the template of the players
 class Player:
@@ -33,9 +38,9 @@ class Location:
         self.posy = posy #assigns the y possition
         self.spacebuffer = 10
 
-    def print_destination_info(destination):
+    def print_destination_info(self):
         print("\n     **DESTINATION LOCATION**     ",
-            '\nLocation:',destination.posx,"x",destination.posy,"y\n\n")
+            '\nLocation:',self.posx,"x",self.posy,"y\n\n")
 
 # calculates the midpoint between two points given to the function
 def calculate_midpoint(player1,player2):
@@ -101,7 +106,7 @@ PLAYER2WIN = False
 #prints all the player info
 player1.print_info(target_destination, player2)
 player2.print_info(target_destination, player1)
-target_destination.print_destination_info(target_destination)
+target_destination.print_destination_info()
 
 while PLAYER1WIN is False and PLAYER2WIN is False:
     print("Player 1, enter your direction and the amount you want to move in it")
@@ -111,7 +116,7 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
     if player1.check_win(player2, target_destination):
         WINNER = 'Player 1'
         PLAYER1WIN = True
-    target_destination.print_destination_info(target_destination)
+    target_destination.print_destination_info()
     
     print("Player 2, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
@@ -120,6 +125,6 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
     if player2.check_win(player1, target_destination):
         WINNER = 'Player 2'
         PLAYER1WIN = True
-    target_destination.print_destination_info(target_destination)
+    target_destination.print_destination_info()
 
 print(WINNER,"has won the game!")

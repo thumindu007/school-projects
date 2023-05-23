@@ -2,12 +2,7 @@ import random
 import time
 from pytimedinput import timedInput #speacial version of an input
 import math
-import pygame
-import sys
 from triples import * #imports the triples list
-
-pygame.init()
-screen = pygame.display.set_mode((1600, 1600))
 
 #creates a class for the template of the players
 class Player:
@@ -42,6 +37,17 @@ class Location:
         print("\n     **DESTINATION LOCATION**     ",
             '\nLocation:',self.posx,"x",self.posy,"y\n\n")
 
+
+#creates a list of the possible directions a player can move
+directions = [[1, 1, 1, True],
+              [2, 1, 1, False],
+              [3, -1, 1, False],
+              [4, 1, -1, True],
+              [5, -1, -1, True],
+              [6, -1, -1, False],
+              [7, 1, -1, False],
+              [8, -1, 1, True]]
+
 # calculates the midpoint between two points given to the function
 def calculate_midpoint(player1,player2):
     midpointx,midpointy = (player1.posx + player2.posx) / 2, (player1.posy + player2.posy)/2
@@ -56,7 +62,6 @@ def calculate_distance(point1, point2):
     return round(math.sqrt(((point1.posx - point2.posx) ** 2) + ((point1.posy - point2.posy) ** 2)), 1)
 
 #prints the infomation about the destination
-
 
 #calculates the 2 numbers that will be added to the coordinates of a player to make them move in a certain direction
 def translation_calculator(short_side, long_side, direction): #short side is the first number of the triple and long side is the second
@@ -84,15 +89,6 @@ def move_player(possible_moves): #creates a new set of coordinates that will be 
     short,long = triple_to_move[0], triple_to_move[1]
     return translation_calculator(short, long, direction)
 
-#creates a list of the possible directions a player can move
-directions = [[1, 1, 1, True],
-              [2, 1, 1, False],
-              [3, -1, 1, False],
-              [4, 1, -1, True],
-              [5, -1, -1, True],
-              [6, -1, -1, False],
-              [7, 1, -1, False],
-              [8, -1, 1, True]]
 
 #uses the class as a template to create players with random coordinates
 player1 = Player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)

@@ -2,7 +2,10 @@ import random
 import time
 from pytimedinput import timedInput #speacial version of an input
 import math
+import pygame
+import sys
 from triples import * #imports the triples list
+pygame.init()
 
 #creates a class for the template of the players
 class Player:
@@ -27,6 +30,10 @@ class Player:
         else:
             return False #returns False if they aren't in one
         
+    def draw(self, surface, colour):
+        cartesian_coords = coord_transform(self)
+        pygame.draw.rect(surface, colour, (cartesian_coords[0], cartesian_coords[1], 5, 5))
+        
 class Location:
     def __init__(self, posx, posy):
         self.posx = posx #assigns the x possition
@@ -37,16 +44,9 @@ class Location:
         print("\n     **DESTINATION LOCATION**     ",
             '\nLocation:',self.posx,"x",self.posy,"y\n\n")
 
-
-#creates a list of the possible directions a player can move
-directions = [[1, 1, 1, True],
-              [2, 1, 1, False],
-              [3, -1, 1, False],
-              [4, 1, -1, True],
-              [5, -1, -1, True],
-              [6, -1, -1, False],
-              [7, 1, -1, False],
-              [8, -1, 1, True]]
+#translates the origonal coordinates of a player to make it visable on a grid where 0 0 is the top left
+def coord_transform(object):
+    return object.posx+400, 400-object.posy
 
 # calculates the midpoint between two points given to the function
 def calculate_midpoint(player1,player2):
@@ -60,8 +60,6 @@ def calculate_gradient(playercoords,destination):
 #calculates the listance between any 2 points
 def calculate_distance(point1, point2):
     return round(math.sqrt(((point1.posx - point2.posx) ** 2) + ((point1.posy - point2.posy) ** 2)), 1)
-
-#prints the infomation about the destination
 
 #calculates the 2 numbers that will be added to the coordinates of a player to make them move in a certain direction
 def translation_calculator(short_side, long_side, direction): #short side is the first number of the triple and long side is the second
@@ -89,11 +87,23 @@ def move_player(possible_moves): #creates a new set of coordinates that will be 
     short,long = triple_to_move[0], triple_to_move[1]
     return translation_calculator(short, long, direction)
 
+#creates a list of the possible directions a player can move
+directions = [[1, 1, 1, True],
+              [2, 1, 1, False],
+              [3, -1, 1, False],
+              [4, 1, -1, True],
+              [5, -1, -1, True],
+              [6, -1, -1, False],
+              [7, 1, -1, False],
+              [8, -1, 1, True]]
+
+
+
 
 #uses the class as a template to create players with random coordinates
-player1 = Player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 1)
-player2 = Player(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1), 2)
-target_destination = Location(random.randrange(-800, 800, 1), random.randrange(-800, 800, 1))
+player1 = Player(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1), 1)
+player2 = Player(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1), 2)
+target_destination = Location(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1))
 
 #declaires that no one has won the game yet
 PLAYER1WIN = False
@@ -104,7 +114,20 @@ player1.print_info(target_destination, player2)
 player2.print_info(target_destination, player1)
 target_destination.print_destination_info()
 
+screen = pygame.display.set_mode((800, 800)) #sets up the canvas
+pygame.display.set_caption('Cartesian Plane Game') #creates title for window
+
+
 while PLAYER1WIN is False and PLAYER2WIN is False:
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            PLAYER1WIN = True
+            
+    screen.fill('white')
+    player1.draw(screen, 'red')
+    player2.draw(screen, 'blue')
+    pygame.display.update()
     print("Player 1, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player1.posx, player1.posy = player1.posx + new_coords[0], player1.posy + new_coords[1]
@@ -113,7 +136,9 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
         WINNER = 'Player 1'
         PLAYER1WIN = True
     target_destination.print_destination_info()
-    
+
+    player1.draw(screen, 'red')
+    player2.draw(screen, 'blue')
     print("Player 2, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player2.posx, player2.posy = player2.posx + new_coords[0], player2.posy + new_coords[1]
@@ -122,5 +147,7 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
         WINNER = 'Player 2'
         PLAYER1WIN = True
     target_destination.print_destination_info()
+    
+    
 
 print(WINNER,"has won the game!")

@@ -97,9 +97,6 @@ directions = [[1, 1, 1, True],
               [7, 1, -1, False],
               [8, -1, 1, True]]
 
-
-
-
 #uses the class as a template to create players with random coordinates
 player1 = Player(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1), 1)
 player2 = Player(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1), 2)

@@ -43,6 +43,10 @@ class Location:
     def print_destination_info(self):
         print("\n     **DESTINATION LOCATION**     ",
             '\nLocation:',self.posx,"x",self.posy,"y\n\n")
+        
+    def draw(self, surface, colour):
+        cartesian_coords = coord_transform(self)
+        pygame.draw.rect(surface, colour, (cartesian_coords[0], cartesian_coords[1], 5, 5))
 
 #translates the origonal coordinates of a player to make it visable on a grid where 0 0 is the top left
 def coord_transform(object):
@@ -87,6 +91,13 @@ def move_player(possible_moves): #creates a new set of coordinates that will be 
     short,long = triple_to_move[0], triple_to_move[1]
     return translation_calculator(short, long, direction)
 
+def drawandprint(p1, p2, destination, screen):
+    screen.fill('white')
+    p1.draw(screen, 'red')
+    p2.draw(screen, 'blue')
+    destination.draw(screen, 'green')
+    
+
 #creates a list of the possible directions a player can move
 directions = [[1, 1, 1, True],
               [2, 1, 1, False],
@@ -102,49 +113,40 @@ player1 = Player(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1),
 player2 = Player(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1), 2)
 target_destination = Location(random.randrange(-400, 400, 1), random.randrange(-400, 400, 1))
 
+screen = pygame.display.set_mode((800, 800)) #sets up the canvas
+pygame.display.set_caption('Cartesian Plane Game') #creates title for window
+
 #declaires that no one has won the game yet
 PLAYER1WIN = False
 PLAYER2WIN = False
 
 #prints all the player info
 player1.print_info(target_destination, player2)
-player2.print_info(target_destination, player1)
-target_destination.print_destination_info()
-
-screen = pygame.display.set_mode((800, 800)) #sets up the canvas
-pygame.display.set_caption('Cartesian Plane Game') #creates title for window
 
 
 while PLAYER1WIN is False and PLAYER2WIN is False:
-    
+    screen.fill('white')
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             PLAYER1WIN = True
             
-    screen.fill('white')
-    player1.draw(screen, 'red')
-    player2.draw(screen, 'blue')
+    drawandprint(player1, player2, target_destination, screen)
     pygame.display.update()
     print("Player 1, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player1.posx, player1.posy = player1.posx + new_coords[0], player1.posy + new_coords[1]
-    player1.print_info(target_destination, player2)
     if player1.check_win(player2, target_destination):
         WINNER = 'Player 1'
         PLAYER1WIN = True
-    target_destination.print_destination_info()
-
+    drawandprint(player1, player2, target_destination, screen)
+    pygame.display.update()
     player1.draw(screen, 'red')
     player2.draw(screen, 'blue')
     print("Player 2, enter your direction and the amount you want to move in it")
     new_coords = move_player(triples)
     player2.posx, player2.posy = player2.posx + new_coords[0], player2.posy + new_coords[1]
-    player2.print_info(target_destination, player2)
     if player2.check_win(player1, target_destination):
         WINNER = 'Player 2'
         PLAYER1WIN = True
-    target_destination.print_destination_info()
-    
-    
 
 print(WINNER,"has won the game!")

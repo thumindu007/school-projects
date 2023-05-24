@@ -32,23 +32,24 @@ class Player:
             return False #returns False if they aren't in one
         
     def move_player(self, possible_moves): #creates a new set of coordinates that will be added to the origonal ones
-        units_to_move_direction, timedout = timedInput("What is your move?: ", timeout=10) #gets the input for units to move and directions from a timedInput
-        if timedout:                                                                       #this will 
-            print("Timed out when waiting for input.")
-            units_to_move_direction = [random.randrange(5, 100, 1), random.randrange(1, 8, 1)]
-            time.sleep(3)
-        else:
-            units_to_move_direction = units_to_move_direction.split()
-        units_to_move, direction = int(units_to_move_direction[0]), int(units_to_move_direction[1])
-        for move in possible_moves:
-            if move[2] > units_to_move:
-                break
-        triple_to_move = move
-
+        global run
+        while run:
+            units_to_move_direction, timedout = timedInput("What is your move?: ", timeout=10) #gets the input for units to move and directions from a timedInput
+            if timedout:                                                                       #this will 
+                print("Timed out when waiting for input.")
+                units_to_move_direction = [random.randrange(5, 100, 1), random.randrange(1, 8, 1)]
+                time.sleep(3)
+            else:
+                units_to_move_direction = units_to_move_direction.split()
+            units_to_move, direction = int(units_to_move_direction[0]), int(units_to_move_direction[1])
+            for move in possible_moves:
+                if move[2] > units_to_move:
+                    break
+            triple_to_move = move
         
-        short,long = triple_to_move[0], triple_to_move[1]
+            short,long = triple_to_move[0], triple_to_move[1]
         
-        return translation_calculator(short, long, direction)
+            return translation_calculator(short, long, direction)
         
     def draw(self, surface, colour):
         cartesian_coords = coord_transform(self)
@@ -101,7 +102,6 @@ def drawandprint(p1, p2, destination, screen):
     p2.draw(screen, 'blue')
     destination.draw(screen, 'green')
     
-
 #creates a list of the possible directions a player can move
 directions = [[1, 1, 1, True],
               [2, 1, 1, False],
@@ -123,8 +123,7 @@ pygame.display.set_caption('Cartesian Plane Game') #creates title for window
 #declaires that no one has won the game yet
 PLAYER1WIN = False
 PLAYER2WIN = False
-thread = None
-
+run = True
 #prints all the player info
 player1.print_info(target_destination, player2)
 
@@ -138,11 +137,13 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
     pygame.display.update()
     
     print("Player 1, enter your direction and the amount you want to move in it")
-    my_thread = threading.Thread(target=player1.move_player(triples))
-    my_thread.start()
+    thread = threading.Thread(target=player1.move_player(triples))
+    thread.start()
     new_coords = player1.move_player(triples)
     player1.posx, player1.posy = player1.posx + new_coords[0], player1.posy + new_coords[1]
-    
+    running_flag = False
+    thread.join()
+
     if player1.check_win(player2, target_destination):
         WINNER = 'Player 1'
         PLAYER1WIN = True
@@ -157,5 +158,5 @@ while PLAYER1WIN is False and PLAYER2WIN is False:
     if player2.check_win(player1, target_destination):
         WINNER = 'Player 2'
         PLAYER1WIN = True
-
+    
 print(WINNER,"has won the game!")

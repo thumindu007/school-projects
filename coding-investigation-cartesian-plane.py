@@ -80,7 +80,14 @@ def move_player(possible_moves): #creates a new set of coordinates that will be 
         units_to_move_direction = [random.randrange(5, 800, 1), random.randrange(1, 8, 1)]
         time.sleep(3)
     else:
-        units_to_move_direction = units_to_move_direction.split()
+        try:
+            units_to_move_direction = units_to_move_direction.split()
+            if int(units_to_move_direction[0]) < 5:
+                units_to_move_direction = [random.randrange(5, 800, 1), random.randrange(1, 8, 1)]
+            elif int(units_to_move_direction[1]) < 1 or units_to_move_direction[1] > 8:
+                units_to_move_direction = [random.randrange(5, 800, 1), random.randrange(1, 8, 1)]
+        except:
+            units_to_move_direction = [random.randrange(5, 800, 1), random.randrange(1, 8, 1)]
     units_to_move, direction = int(units_to_move_direction[0]), int(units_to_move_direction[1])
     for move in possible_moves:
         if move[2] > units_to_move:

@@ -93,6 +93,7 @@ def move_player(possible_moves): #creates a new set of coordinates that will be 
         if move[2] > units_to_move:
             break
         triple_to_move = move
+    print(triple_to_move)
     short,long = triple_to_move[0], triple_to_move[1]
     return translation_calculator(short, long, direction)
 
